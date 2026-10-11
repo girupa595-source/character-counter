@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Counter</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef2ff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.12);
+        }
+
+        .icon {
+            width: 55px;
+            height: 55px;
+            background: #e0e7ff;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+            color:#acd13d;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            background: #fafaff;
+        }
+
+        textarea:focus {
+            border-color: #acd13d;
+            background: white;
+        }
+
+        .counter {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .count {
+            font-weight: bold;
+            color: #acd13d;
+        }
+
+        .progress {
+            height: 7px;
+            background: #e0e7ff;
+            border-radius: 10px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #acd13d;
+            border-radius: 10px;
+            transition: width 0.2s;
+        }
+
+        .warning {
+            color: #dc2626;
+            background: #fef2f2;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .clear-btn {
+            margin-top: 22px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9px;
+            background: #acd13d;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background: #acd13d;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #bdc5af;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="icon">✍️</div>
+
+        <h1>What's on your mind?</h1>
+
+        <p class="description">
+            Write your thoughts, share a message, or simply
+            express yourself. Keep an eye on your character limit!
+        </p>
+
+        <label for="message">Your Message</label>
+
+        <textarea
+            id="message"
+            maxlength="200"
+            placeholder="Start typing something here..."
+        ></textarea>
+
+        <div class="counter">
+            <span>
+                <span class="count" id="typed">0</span> / 200 characters
+            </span>
+
+            <span id="remaining">200 remaining</span>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <p class="warning" id="warning">
+            You've reached the 200-character limit!
+        </p>
+
+        <button class="clear-btn" id="clearBtn">Clear Message</button>
+
+        <p class="footer">
+            A little space to express yourself 💜
+        </p>
+
+    </div>
+
+    <script>
+        const message = document.getElementById("message");
+        const typed = document.getElementById("typed");
+        const remaining = document.getElementById("remaining");
+        const progressBar = document.getElementById("progressBar");
+        const warning = document.getElementById("warning");
+        const clearBtn = document.getElementById("clearBtn");
+
+        const maxCharacters = 200;
+
+        message.addEventListener("input", function () {
+            const total = message.value.length;
+            const left = maxCharacters - total;
+
+            typed.textContent = total;
+            remaining.textContent = left + " remaining";
+
+            progressBar.style.width =
+                (total / maxCharacters) * 100 + "%";
+
+            if (total >= maxCharacters) {
+                warning.style.display = "block";
+                remaining.style.color = "#dc2626";
+                progressBar.style.background = "#ef4444";
+            } else {
+                warning.style.display = "none";
+                remaining.style.color = "#64748b";
+                progressBar.style.background = "#6366f1";
+            }
+        });
+
+        clearBtn.addEventListener("click", function () {
+            message.value = "";
+            message.dispatchEvent(new Event("input"));
+            message.focus();
+        });
+    </script>
+
+</body>
+</html>
